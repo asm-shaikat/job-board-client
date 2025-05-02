@@ -1,19 +1,20 @@
-'use client'
-import { authService } from "@/services/AuthService";
-import React, { useState } from "react";
-const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+'use client';
+import { authService } from '@/services/AuthService';
+import React, { useState } from 'react';
+const Register: React.FC = () => {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    try{
-      const data = await authService.login(email, password);
-    }
-    catch (error) {
-      setError("Login failed. Please check your credentials.");
-      console.error("Login error:", error);
+    try {
+      const data = await authService.register(name, email, password);
+      console.log('Register Success:', data); // Handle success (e.g., redirect, show success message)
+      // Redirect or update app state as necessary
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
@@ -21,9 +22,23 @@ const Login: React.FC = () => {
     <div className="h-screen flex justify-center items-center bg-gray-200">
       <div className="card w-96 bg-white shadow-xl">
         <div className="card-body">
-          <h2 className="card-title text-center text-2xl text-black">Login</h2>
+          <h2 className="card-title text-center text-2xl text-black">Register</h2>
           {error && <div className="alert alert-error">{error}</div>}
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleRegister}>
+            <div className="form-control mb-4">
+              <label className="label" htmlFor="name">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Name"
+                className="input input-bordered"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
             <div className="form-control mb-4">
               <label className="label" htmlFor="email">
                 <span className="label-text">Email</span>
@@ -54,15 +69,15 @@ const Login: React.FC = () => {
             </div>
             <div className="form-control mt-4">
               <button type="submit" className="btn btn-primary w-full">
-                Login
+                Register
               </button>
             </div>
           </form>
           <div className="mt-4 text-center">
             <p>
-              Don't have an account?{" "}
-              <a href="/register" className="link link-primary">
-                Register here
+              Already have an account?{' '}
+              <a href="/login" className="link link-primary">
+                Login here
               </a>
             </p>
           </div>
@@ -72,4 +87,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;
