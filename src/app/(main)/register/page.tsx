@@ -1,7 +1,9 @@
 'use client';
 import { authService } from '@/services/AuthService';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 const Register: React.FC = () => {
+  const router = useRouter();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -10,9 +12,8 @@ const Register: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await authService.register(name, email, password);
-      console.log('Register Success:', data); // Handle success (e.g., redirect, show success message)
-      // Redirect or update app state as necessary
+      const response = await authService.register(name, email, password);
+      router.push('/login');
     } catch (err: any) {
       setError(err.message);
     }

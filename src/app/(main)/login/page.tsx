@@ -1,15 +1,25 @@
 'use client'
 import { authService } from "@/services/AuthService";
+import { setAuth } from "@/store/slices/authSlice";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/store";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
 const Login: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const router = useRouter();
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try{
-      const data = await authService.login(email, password);
+      const response = await authService.login(email, password);
+      dispatch(setAuth({user: response.user, token: response.token}));
+      router.push('/');
     }
     catch (error) {
       setError("Login failed. Please check your credentials.");
