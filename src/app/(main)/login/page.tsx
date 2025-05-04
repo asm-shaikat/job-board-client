@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { showErrorToast, showSucessToast } from "@/app/utils/toast";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,9 +21,11 @@ const Login: React.FC = () => {
       const response = await authService.login(email, password);
       dispatch(setAuth({user: response.user, token: response.token}));
       router.push('/');
+      showSucessToast("Login successful!");
     }
     catch (error) {
       setError("Login failed. Please check your credentials.");
+      showErrorToast("Login failed. Please check your credentials.");
       console.error("Login error:", error);
     }
   };

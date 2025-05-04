@@ -2,6 +2,7 @@
 import { authService } from '@/services/AuthService';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { showErrorToast, showSucessToast } from '@/app/utils/toast';
 const Register: React.FC = () => {
   const router = useRouter();
   const [name, setName] = useState<string>('');
@@ -14,8 +15,10 @@ const Register: React.FC = () => {
     try {
       const response = await authService.register(name, email, password);
       router.push('/login');
+      showSucessToast("User registered successfully");
     } catch (err: any) {
       setError(err.message);
+      showErrorToast(err.message);
     }
   };
 
