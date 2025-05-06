@@ -4,7 +4,7 @@ import "./globals.css";
 import AuthGuard from "@/components/AuthGuard";
 import { Providers } from "./Providers";
 import { Toaster } from "react-hot-toast";
-import Navbar from "@/components/Navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <Toaster position="top-right" reverseOrder={false} />
         <Providers>
-          <Navbar />
+          <NavbarWrapper/>
           <AuthGuard>{children}</AuthGuard>
         </Providers>
       </body>

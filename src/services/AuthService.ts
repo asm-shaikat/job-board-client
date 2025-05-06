@@ -2,7 +2,7 @@ class AuthService {
     private apiBaseUrl: string;
 
     constructor() {
-        this.apiBaseUrl = "http://localhost:5000/api";
+        this.apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
     }
 
     async login(email: string, password: string): Promise<any> {

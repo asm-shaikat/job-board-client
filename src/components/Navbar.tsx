@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "@/store";
+import type { AppDispatch, RootState } from "@/store";
 import { logout } from "@/store/slices/authSlice";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 export default function Navbar() {
+  const {user,token} = useSelector((state:RootState)=> state.auth)
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -32,23 +34,36 @@ export default function Navbar() {
 
           {/* Profile Avatar Dropdown */}
           <div className="relative">
-            <div className="avatar avatar-online" onClick={() => setProfileOpen(!profileOpen)}>
-              <div className="w-8 rounded-full">
-                  <img src="https://img.daisyui.com/images/profile/demo/gordon@192.webp" />
-              </div>
-            </div>
-            {profileOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
-                <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100">Profile</Link>
-                <Link href="/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+            {/* Profile Avatar Dropdown or Login Button */}
+            <div className="relative">
+            {token ? (
+                <>
+                <div
+                    className="avatar avatar-online cursor-pointer"
+                    onClick={() => setProfileOpen(!profileOpen)}
                 >
-                  Logout
-                </button>
-              </div>
+                    <div className="w-8 rounded-full">
+                    <img src="https://img.daisyui.com/images/profile/demo/gordon@192.webp" />
+                    </div>
+                </div>
+                {profileOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
+                    <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100">Profile</Link>
+                    <Link href="/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</Link>
+                    <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                        Logout
+                    </button>
+                    </div>
+                )}
+                </>
+            ) : (
+                <Link href="/login" className="hover:underline">Login</Link>
             )}
+            </div>
+
           </div>
         </div>
 
