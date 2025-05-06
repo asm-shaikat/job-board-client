@@ -25,7 +25,21 @@ class HomeService {
           console.error("Job Post Fetching Error", error);
           throw error;
         }
-    }      
+    }    
+    
+    async toggleLike(jobId: string, token: string) {
+        const response = await fetch(`${this.apiBaseUrl}/likes/${jobId}/toggle`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+             Authorization: `Bearer ${token}`,
+          },
+        });
+      
+        if (!response.ok) throw new Error("Failed to toggle like");
+        return response.json();
+      }
+      
 }
 
 export const homeService = new HomeService()
